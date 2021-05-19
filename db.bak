@@ -1,0 +1,1299 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.14 (Ubuntu 10.14-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.14 (Ubuntu 10.14-0ubuntu0.18.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO telegrambot;
+
+--
+-- Name: cart_items; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.cart_items (
+    id integer NOT NULL,
+    user_id integer,
+    dish_id integer,
+    count integer
+);
+
+
+ALTER TABLE public.cart_items OWNER TO telegrambot;
+
+--
+-- Name: cart_items_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.cart_items_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cart_items_id_seq OWNER TO telegrambot;
+
+--
+-- Name: cart_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.cart_items_id_seq OWNED BY public.cart_items.id;
+
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.comments (
+    id integer NOT NULL,
+    text character varying(100),
+    user_id integer,
+    username character varying(100)
+);
+
+
+ALTER TABLE public.comments OWNER TO telegrambot;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comments_id_seq OWNER TO telegrambot;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
+-- Name: dish_categories; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.dish_categories (
+    id integer NOT NULL,
+    name character varying(100),
+    name_uz character varying(100),
+    number integer,
+    lft integer NOT NULL,
+    rgt integer NOT NULL,
+    level integer NOT NULL,
+    tree_id integer,
+    parent_id integer,
+    image_id character varying(150),
+    image_path character varying(150)
+);
+
+
+ALTER TABLE public.dish_categories OWNER TO telegrambot;
+
+--
+-- Name: dish_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.dish_categories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dish_categories_id_seq OWNER TO telegrambot;
+
+--
+-- Name: dish_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.dish_categories_id_seq OWNED BY public.dish_categories.id;
+
+
+--
+-- Name: dishes; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.dishes (
+    id integer NOT NULL,
+    name character varying(100),
+    name_uz character varying(100),
+    image_id character varying(150),
+    image_path character varying(150),
+    description character varying(500),
+    description_uz character varying(500),
+    is_hidden boolean,
+    price double precision,
+    number integer,
+    category_id integer,
+    show_usd boolean,
+    quantity integer
+);
+
+
+ALTER TABLE public.dishes OWNER TO telegrambot;
+
+--
+-- Name: dishes_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.dishes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dishes_id_seq OWNER TO telegrambot;
+
+--
+-- Name: dishes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.dishes_id_seq OWNED BY public.dishes.id;
+
+
+--
+-- Name: locations; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.locations (
+    id integer NOT NULL,
+    latitude double precision,
+    longitude double precision,
+    address character varying(100),
+    order_id integer
+);
+
+
+ALTER TABLE public.locations OWNER TO telegrambot;
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.locations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.locations_id_seq OWNER TO telegrambot;
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
+
+
+--
+-- Name: notification_chats; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.notification_chats (
+    chat_id character(100) NOT NULL,
+    chat_title character varying(100)
+);
+
+
+ALTER TABLE public.notification_chats OWNER TO telegrambot;
+
+--
+-- Name: notification_chats_chat_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.notification_chats_chat_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.notification_chats_chat_id_seq OWNER TO telegrambot;
+
+--
+-- Name: notification_chats_chat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.notification_chats_chat_id_seq OWNED BY public.notification_chats.chat_id;
+
+
+--
+-- Name: order_items; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.order_items (
+    id integer NOT NULL,
+    order_id integer,
+    dish_id integer,
+    count integer
+);
+
+
+ALTER TABLE public.order_items OWNER TO telegrambot;
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.order_items_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_items_id_seq OWNER TO telegrambot;
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.order_items_id_seq OWNED BY public.order_items.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.orders (
+    id integer NOT NULL,
+    user_id integer,
+    user_name character varying(100),
+    shipping_method character varying(50),
+    payment_method character varying(50),
+    address_txt character varying(100),
+    phone_number character varying(15),
+    confirmed boolean,
+    confirmation_date timestamp without time zone,
+    delivery_price integer,
+    total_amount double precision,
+    distance character varying(15)
+);
+
+
+ALTER TABLE public.orders OWNER TO telegrambot;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO telegrambot;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
+-- Name: registration_requests; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.registration_requests (
+    id integer NOT NULL,
+    user_id integer,
+    phone_number character varying(20),
+    tg_username character varying(100),
+    username character varying(100),
+    created_at timestamp without time zone
+);
+
+
+ALTER TABLE public.registration_requests OWNER TO telegrambot;
+
+--
+-- Name: registration_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.registration_requests_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registration_requests_id_seq OWNER TO telegrambot;
+
+--
+-- Name: registration_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.registration_requests_id_seq OWNED BY public.registration_requests.id;
+
+
+--
+-- Name: user_admins; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.user_admins (
+    id integer NOT NULL,
+    email character varying(100),
+    password_hash character varying(120)
+);
+
+
+ALTER TABLE public.user_admins OWNER TO telegrambot;
+
+--
+-- Name: user_admins_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.user_admins_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_admins_id_seq OWNER TO telegrambot;
+
+--
+-- Name: user_admins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.user_admins_id_seq OWNED BY public.user_admins.id;
+
+
+--
+-- Name: user_dish; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.user_dish (
+    user_id integer NOT NULL,
+    dish_id integer
+);
+
+
+ALTER TABLE public.user_dish OWNER TO telegrambot;
+
+--
+-- Name: user_dish_user_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.user_dish_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_dish_user_id_seq OWNER TO telegrambot;
+
+--
+-- Name: user_dish_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.user_dish_user_id_seq OWNED BY public.user_dish.user_id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: telegrambot
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    full_user_name character varying(100),
+    username character varying(100),
+    phone_number character varying(15),
+    language character varying(5),
+    token character varying(50),
+    confirmed boolean,
+    telegram_id integer,
+    registration_date timestamp without time zone,
+    accept_policy boolean
+);
+
+
+ALTER TABLE public.users OWNER TO telegrambot;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: telegrambot
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO telegrambot;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: telegrambot
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: cart_items id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.cart_items ALTER COLUMN id SET DEFAULT nextval('public.cart_items_id_seq'::regclass);
+
+
+--
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
+-- Name: dish_categories id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.dish_categories ALTER COLUMN id SET DEFAULT nextval('public.dish_categories_id_seq'::regclass);
+
+
+--
+-- Name: dishes id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.dishes ALTER COLUMN id SET DEFAULT nextval('public.dishes_id_seq'::regclass);
+
+
+--
+-- Name: locations id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.locations_id_seq'::regclass);
+
+
+--
+-- Name: notification_chats chat_id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.notification_chats ALTER COLUMN chat_id SET DEFAULT nextval('public.notification_chats_chat_id_seq'::regclass);
+
+
+--
+-- Name: order_items id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.order_items ALTER COLUMN id SET DEFAULT nextval('public.order_items_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
+-- Name: registration_requests id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.registration_requests ALTER COLUMN id SET DEFAULT nextval('public.registration_requests_id_seq'::regclass);
+
+
+--
+-- Name: user_admins id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.user_admins ALTER COLUMN id SET DEFAULT nextval('public.user_admins_id_seq'::regclass);
+
+
+--
+-- Name: user_dish user_id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.user_dish ALTER COLUMN user_id SET DEFAULT nextval('public.user_dish_user_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.alembic_version (version_num) FROM stdin;
+3ddb763db202
+\.
+
+
+--
+-- Data for Name: cart_items; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.cart_items (id, user_id, dish_id, count) FROM stdin;
+79	395554026	920	1
+82	633288098	919	1
+84	60519425	858	1
+85	60519425	873	1
+86	64925540	870	2
+88	32515296	863	1
+89	688526490	881	0
+90	395554026	868	1
+93	696968352	892	9
+\.
+
+
+--
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.comments (id, text, user_id, username) FROM stdin;
+3	/start	64925540	Владимир Мякота
+4	Всё понравилось ⭐️⭐️⭐️⭐️⭐️	116797709	Behzod Mansurov
+5	Всё понравилось ⭐️⭐️⭐️⭐️⭐️	1390262168	Dem Gilks
+\.
+
+
+--
+-- Data for Name: dish_categories; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.dish_categories (id, name, name_uz, number, lft, rgt, level, tree_id, parent_id, image_id, image_path) FROM stdin;
+263	Супы	Супы	1	1	2	1	2	\N	\N	\N
+264	Роллы	Роллы	1	1	2	1	3	\N	\N	\N
+265	Роллы горячие	Роллы горячие	1	1	2	1	4	\N	\N	\N
+266	WOK	WOK	1	1	2	1	5	\N	\N	\N
+267	Горячие закуски	Горячие закуски	1	1	2	1	6	\N	\N	\N
+269	Салаты	Салаты	1	1	2	1	8	\N	\N	\N
+270	Сендвич роллы	Сендвич роллы	1	1	2	1	9	\N	\N	\N
+262	Сеты	Сеты	1	1	2	1	1	\N	\N	\N
+268	Суши	Суши	1	1	2	1	7	\N	AgACAgIAAxkDAAIQYF-Tw-9dnm2NRJxAgOb-wpjZgLr_AAL6rjEb3IOhSB2MHhpumMqdufkamC4AAwEAAwIAA3cAA8wlAgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__51-min.jpg
+\.
+
+
+--
+-- Data for Name: dishes; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.dishes (id, name, name_uz, image_id, image_path, description, description_uz, is_hidden, price, number, category_id, show_usd, quantity) FROM stdin;
+863	Калифорния по полам	Калифорния по полам	\N	\N			f	0	1	262	f	100
+867	Яичный	Яичный	\N	\N			t	20000	1	266	f	99
+892	Чука	Чука	\N	\N			f	12000	1	269	f	100
+893	Греческий	Греческий	\N	\N			f	12000	1	269	f	100
+894	Нисуаз	Нисуаз	\N	\N			f	14000	1	269	f	100
+869	Рис Веган	Рис Веган	AgACAgIAAxkDAAIcIl-daIoeJmyD1MKXPScwlwvV9oAFAAJyrzEb-FjoSI5G-2n85cbmJ6Holy4AAwEAAwIAA3kAA6R2AgABGwQ	/home/telegrambot/SeriyakiBot/data/attachment (1).jpg			f	20000	1	266	f	100
+873	Курица с овощами в кислосладком соусе 	Курица с овощами в кислосладком соусе 	\N	\N			t	0	1	266	f	100
+889	Гункан Угорь	Гункан Угорь	AgACAgIAAxkDAAIaLV-a2cR-OfFmD4OeOLAJOfFCCocFAAJkrzEbU_bYSL4AAdxsOuikxqQtRJguAAMBAAMCAAN3AANGYgIAARsE	/home/telegrambot/SeriyakiBot/data/v_09092020__33.jpg	рис 25 гр, угорь 20 гр	рис 25 гр, угорь 20 гр	f	11500	1	268	f	100
+861	Ташкентский микс 	Ташкентский микс 	AgACAgIAAxkDAAIbYl-dITCH89c1Hiyr53GUJcLEOpf6AALjrjEb-FjoSJW86zUQaV4r_mYWmC4AAwEAAwIAA3cAA2hwAgABGwQ	/home/telegrambot/SeriyakiBot/data/IMG_7186-min.jpg	филаделфия грин 8 шт, нежный тунец 8 шт, океан ролл 8 шт, инь янь 8 шт, калифорния угорь 8 шт.\r\n	филаделфия грин 8 шт, нежный тунец 8 шт, океан ролл 8 шт, инь янь 8 шт, калифорния угорь 8 шт.\r\n	f	228000	1	262	f	100
+871	Рис с рыбой	Рис с рыбой	\N	\N			t	20000	1	266	f	99
+874	Гов с древесными грибами	Гов с древесными грибами	\N	\N			t	20000	1	266	f	100
+881	Крылышки SeriYaki ( maxi ) 	Крылышки SeriYaki ( maxi )	AgACAgIAAxkDAAIQ7l-UEdwdhP9qzd1z4uhdW7oNXTl1AAJTtTEbQ0uhSHYtJ9KtyrAyPIrali4AAwEAAwIAA3cAA-LLAgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__40-min.jpg	10 шт 		f	42000	1	267	f	100
+895	Кукуруза	Кукуруза	\N	\N			t	7000	1	\N	f	100
+886	Мясной спринг ролл жаренный 	Мясной спринг ролл жаренный 	\N	\N	говяжий фарш, овощи, фунчеза, рисовая тесто \r\n\r\n	говяжий фарш, овощи, фунчеза, рисовая тесто \r\n	f	48000	1	267	f	100
+891	Нигири чука 	Нигири чука 	AgACAgIAAxkDAAIaR1-a3rRmwhTecVY5Re4dB01Hn-ZlAAJprzEbU_bYSFmblTC5JCKRwvhply4AAwEAAwIAA20AA_t1AgABGwQ	/home/telegrambot/SeriyakiBot/data/images.jpg	рис 25 гр, чука 20 гр\r\n\r\n	рис 25 гр, чука 20 гр\r\n	f	9000	1	268	f	100
+883	Макси асорти 	Макси асорти 	\N	\N			t	0	1	267	f	100
+884	Мидии запеченные в Яки соусе 	Мидии запеченные в Яки соусе 	AgACAgIAAxkDAAIalF-a4O0tBHW0c9e7lbSqfhdyF6kyAAIusTEb8bvZSMjgp9HyRXSb8kwSlS4AAwEAAwIAA3cAA7rvBQABGwQ	/home/telegrambot/SeriyakiBot/data/мидии 5 шт -min.jpg	мидии 5 шт, яки соус.\r\n\r\n	мидии 5 шт, яки соус.\r\n	f	60000	1	267	f	100
+856	1 кг запеченных роллов	1 кг запеченных роллов	\N	\N			t	0	1	262	f	150
+882	Мини ассорти ( в темпуре )	Мини ассорти ( в темпуре )	\N	\N	креветка 1шт, мидии 1 шт, кальмар 25 гр, лосось 25 гр, овощи \r\n\r\n	креветка 1шт, мидии 1 шт, кальмар 25 гр, лосось 25 гр, овощи \r\n	f	55000	1	267	f	100
+885	Мидии в спайси соусе	Мидии в спайси соусе	AgACAgIAAxkDAAIamV-a4VLrJurgyYLapiumkSugkjO5AAIvsTEb8bvZSIqOdO53TfzM_21Ali4AAwEAAwIAA3cAA6S3AwABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__37.jpg	мидии 5 шт, спайси соус \r\n\r\n	мидии 5 шт, спайси соус\r\n\r\n	f	60000	1	267	f	100
+870	Рис Гов	Рис Гов	\N	\N			t	20000	1	266	f	99
+868	Соба с курицей 	Соба с курицей 	AgACAgIAAxkDAAIcMV-daLBruGqQty6EvHmK6UguqGntAAJ0rzEb-FjoSPsq9T9GxLKzKJPlly4AAwEAAwIAA3kAA792AgABGwQ	/home/telegrambot/SeriyakiBot/data/soba).jpg	Гречишная лапша, курица, овощи, пикантный соус, терияки соус	Гречишная лапша, курица, овощи, пикантный соус, терияки соус	f	20000	1	266	f	98
+872	Рис морской коктель 	Рис морской коктель 	\N	\N			t	20000	1	266	f	100
+896	Грибы шитаки	Грибы шитаки	\N	\N			t	7000	1	\N	f	100
+897	Грибы шамп	Грибы шамп	\N	\N			t	7000	1	\N	f	100
+898	Вешенки	Вешенки	\N	\N			t	6000	1	\N	f	100
+899	Сыр моцарелла	Сыр моцарелла	\N	\N			t	6000	1	\N	f	100
+900	Зел горох	Зел горох	\N	\N			t	3000	1	\N	f	100
+902	Гов	Гов	\N	\N			t	8500	1	\N	f	100
+941	Нежная креветка	Нежная креветка	AgACAgIAAxkDAAIUVl-W8xd7FfZ6HqLlKc7DHyzzmGQkAAJdrzEbuKS5SPiV06KkT4lFUztHmC4AAwEAAwIAA3gAA6xCAgABGwQ	/home/telegrambot/SeriyakiBot/data/cb64a3ab8fb3247854b6b1fc188007e1.jpg			f	55000	1	264	f	100
+919	Филаделфия Масага	Филаделфия Масага	AgACAgIAAxkDAAIXD1-ZbWnabPX4PmIs4m6o7hDHATdDAAJosDEb8bvJSNc_RXFMLWDzNeEUmC4AAwEAAwIAA3gAA05VAgABGwQ	/home/telegrambot/SeriyakiBot/data/5c6d7dc06a3331a047c5ca80d025d56f.jpg	 лосось 70гр, сыр фила 40гр, авокадо, масага		f	50000	1	264	f	100
+907	Креветки	Креветки	\N	\N			t	8000	1	\N	f	100
+921	Калифорния Краб	Калифорния Краб	AgACAgIAAxkDAAIUvV-W9qPkXEWXubqElnA5hoTSzPmxAAJwrzEbuKS5SMMC5pzIE0ScKQzkly4AAwEAAwIAA3gAA-BAAgABGwQ	/home/telegrambot/SeriyakiBot/data/e16406b836401770186cf9a6a0d3a321.jpg			f	30000	1	264	f	100
+938	Seriyaki ролл	Seriyaki ролл	AgACAgIAAxkDAAIT71-W7Wxowt529rnEJMrYPjoPxalnAAK1sDEbmDS4SDMShtmkRYG1Se0XmC4AAwEAAwIAA3gAA2lBAgABGwQ	/home/telegrambot/SeriyakiBot/data/78bf34048db0818369c711a5af037895.jpg			f	45000	1	270	f	100
+950	Сливочный тунец	Сливочный тунец	\N	\N			f	0	1	264	f	100
+947	Ролл вечность	Ролл вечность	AgACAgIAAxkDAAIUgV-W9EZCUVEaH-XOL3twtYXIrARtAAJirzEbuKS5SG3jc205CCxbAehRmC4AAwEAAwIAA3gAA6MxAgABGwQ	/home/telegrambot/SeriyakiBot/data/849d34bb50d4ceb7ce972e7a16f1dc60.jpg	лосось 15гр, угорь 15гр, краб 15гр, унаги соус.\r\n\r\n	лосось 15гр, угорь 15гр, краб 15гр, унаги соус.\r\n\r\n	f	45000	1	265	f	100
+930	Мини Лосось	Мини Лосось	AgACAgIAAxkDAAIYdl-ZkIYL3bYh5Wa9Gw-uPsn8Pr4HAAIwrzEb8bvRSG5exOL4EQhu8PjVli4AAwEAAwIAA3gAAy_3AgABGwQ	/home/telegrambot/SeriyakiBot/data/08543647d5cf5c7ac16285a7d0fd9017.jpg			f	19000	1	264	f	100
+942	ролл сырный тунец 	ролл сырный тунец 	AgACAgIAAxkDAAIUrl-W9pV50xPm8cmWzcazXWmuqP5GAAJurzEbuKS5SFPxz-WqedJufg3Hly4AAwEAAwIAA3gAA9IdAgABGwQ	/home/telegrambot/SeriyakiBot/data/5202edab58843bbcabb1b3a8ec0d4ccc.jpg			f	45000	1	264	f	100
+964	Золотой дракон	Золотой дракон	AgACAgIAAxkDAAIVCV-XEoASjz9Vq0QYC0cRKipzC8JfAALWsDEbaVa5SHk4XljdAwOAINVWmS4AAwEAAwIAA3gAA6wNAAIbBA	/home/telegrambot/SeriyakiBot/data/42fd640aad472962a3b2d111cd477b33-1.jpg	креветка тигровая 20гр, угорь 10гр, тамага 15гр, сыр хохланд, яки соус.\r\n\r\n	креветка тигровая 20гр, угорь 10гр, тамага 15гр, сыр хохланд, яки соус.\r\n\r\n	f	55000	1	265	f	99
+920	Филаделфия Угорь	Филаделфия Угорь	AgACAgIAAxkDAAIXFF-ZbYDaf5g9WdaEot7Ukyy980gAA2mwMRvxu8lIccUPgGWMJIC21faULgADAQADAgADeAADMk0GAAEbBA	/home/telegrambot/SeriyakiBot/data/b61ae1c13dfec82913c324ee1fb0efbb.jpg	угорь 70гр, сыр фила 60гр, огурец, соус унаги.	угорь 70гр, сыр фила 60гр, огурец, соус унаги.	f	65000	1	264	f	100
+966	Сяки темпура	Сяки темпура	AgACAgIAAxkDAAIVil-YGYjYSiZrjTRZDOPxNOQm9cW5AAIysTEbaVbBSBBZJPPkxrlYXCfNly4AAwEAAwIAA3gAA0ogAgABGwQ	/home/telegrambot/SeriyakiBot/data/81fda6ac5034a13fa3655eb2bb4f0c1e.jpg	лосось(копчённый) 25гр, авокадо, тамага, огурец.	лосось(копчённый) 25гр, авокадо, тамага, огурец.	f	47000	1	265	f	100
+922	Калифорния Угорь	Калифорния Угорь	AgACAgIAAxkDAAIUwl-W9qZw_TZJoJghJ2zPyodQbgAB9gACca8xG7ikuUgYL8FHDsV2MaCRIZUuAAMBAAMCAAN4AAOpzgUAARsE	/home/telegrambot/SeriyakiBot/data/7b6e14c71f82b13f59004934dd81b38e.jpg	угорь 35 гр, авокадо, огурец	угорь 35 гр, авокадо, огурец	f	42000	1	264	f	100
+925	Мини авокадо	Мини авокадо	AgACAgIAAxkDAAIVJ1-YD3e32oIVe7n3iWJei7XmcDokAAJDrzEbuKS5SM-ea4gGs6isAxrnly4AAwEAAwIAA3gAAwpFAgABGwQ	/home/telegrambot/SeriyakiBot/data/b2d4a6659ad111f73b2f04ffc2d18f15.jpg			f	14000	1	264	f	100
+915	Миса 	Миса 	\N	\N			f	20000	1	263	f	100
+914	Сливочный Лосось	Сливочный Лосось	AgACAgIAAxkDAAIQ0F-UDBXlUWT5lpI6rhIbEIyl04eGAAJMtTEbQ0uhSDRsNFF55fF2DKp0ly4AAwEAAwIAA3cAAyVBAgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__48-min.jpg			f	25000	1	263	f	100
+960	Калифорния (запеченный острый)	Калифорния (запеченный острый)	AgACAgIAAxkDAAIX-V-ZeoU-iGwZPD_EYh374CBvlOfpAAJ-sDEb8bvJSP9tCjbubxGgK59pli4AAwEAAwIAA3gAA8Q0AwABGwQ	/home/telegrambot/SeriyakiBot/data/153e1798672af33ee1dcd50134999a68.jpg	лосось копченный 40 гр, авокадо, огурец, масага, спайси соус. 	лосось копченный 40 гр, авокадо, огурец, масага, спайси соус. 	f	48000	1	265	f	100
+957	Муви жареный	Муви жареный	AgACAgIAAxkDAAIVnl-YGbJgPIcdmzijNDe_BE3oB3uuAAIzsTEbaVbBSMkAAdWD5b5jBGFxaJcuAAMBAAMCAAN4AAMgXQIAARsE	/home/telegrambot/SeriyakiBot/data/fcbf7185f6377b9590e651fc68509221.jpg	Угорь, краб, сыр хохланд.	Угорь, краб, сыр хохланд.	f	45000	1	265	f	100
+913	Ким Чи	Ким Чи	AgACAgIAAxkDAAIQvF-UC_yll2OgGd7kCKo1a_NDlZojAAJLtTEbQ0uhSGrISvZV00lOW-Y-li4AAwEAAwIAA3cAA_19AwABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__46-min.jpg			f	22000	1	263	f	100
+916	Филаделфия Классика	Филаделфия Классика	AgACAgIAAxkDAAIPI1-Jz9OeO4m-8FdvZSRnlv6rX-xWAALusDEbzCpRSF0fq6uWRMYgkgvkly4AAwEAAwIAA3cAA5baAQABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__9.jpg	Лосось 70гр, сыр фила 60гр, огурцы 15гр	Лосось 70гр, сыр фила 60гр, огурцы 15гр	f	50000	1	264	f	94
+928	Мини угорь	Мини угорь	AgACAgIAAxkDAAIYe1-ZkJNhzu5Qa5w5od5mVrKTRagBAAIyrzEb8bvRSBFdr9j5NLncUdYTlS4AAwEAAwIAA3gAA9TpBQABGwQ	/home/telegrambot/SeriyakiBot/data/232218ce38b1469b7062a5ad35732eb1.jpg			f	28000	1	264	f	100
+926	Мини краб	Мини краб	AgACAgIAAxkDAAIYgF-ZkKK2SjjFJ8MDLlRrfB5j6m2-AAI0rzEb8bvRSAe712R30tWdghWili4AAwEAAwIAA3gAA6U8AwABGwQ	/home/telegrambot/SeriyakiBot/data/6ebba1f40bb15041e41bbf5277b870cc.jpg			f	12000	1	264	f	100
+939	Сансей	Сансей	AgACAgIAAxkDAAIUAV-W7fLjJrTgzr8XtdxLhg_shcz7AAJRrzEbuKS5SEPLSgwTzx4U_oZGli4AAwEAAwIAA3gAAzOPAwABGwQ	/home/telegrambot/SeriyakiBot/data/5cbcf16588b23265fbadd08d2cccac67.jpg			f	38000	1	264	f	99
+908	Мидии	Мидии	\N	\N			t	8000	1	\N	f	100
+929	Мини креветка	Мини креветка	\N	/home/telegrambot/SeriyakiBot/data/6ebba1f40bb15041e41bbf5277b870cc.jpg			f	25000	1	264	f	100
+931	Мини чука	Мини чука	\N	/home/telegrambot/SeriyakiBot/data/ead0d5e3b3203750a27e748410559a13.jpg			f	13000	1	264	f	100
+934	Ким бап	Ким бап	AgACAgIAAxkDAAITsV-W6mHzx2uSBSv1OwyFi-R1AZ7eAAJKrzEbuKS5SJeZUNBLHjfUtBSili4AAwEAAwIAA3gAA30iAwABGwQ	/home/telegrambot/SeriyakiBot/data/a42a3300fe0c68c968fd9d4b82e7d5e6.jpg	Краб, охотничьи колбаски, курица, овощи.	Краб, охотничьи колбаски, курица, овощи.	f	41000	1	264	f	100
+937	Фудживара	Фудживара	AgACAgIAAxkDAAITvl-W69zbmzvYTTTOj11a2LF18losAAJNrzEbuKS5SNgkaxg41TvydKxsli4AAwEAAwIAA3gAA3EeAwABGwQ	/home/telegrambot/SeriyakiBot/data/689ccd6548a278aa3adce578866bb76f.jpg	лосось(копчённый) 15гр, окунь 20гр, сыр фила 20гр.	лосось(копчённый) 15гр, окунь 20гр, сыр фила 20гр.	f	38000	1	264	f	100
+940	Спайси краб	Спайси краб	AgACAgIAAxkDAAIUCF-W7nTLxwzFZN0sVpLsVisxLZWUAAJSrzEbuKS5SDNMYpFBec8-ugoglS4AAwEAAwIAA3gAA23IBQABGwQ	/home/telegrambot/SeriyakiBot/data/daa4edcf311163fa23f5473c637a1afc.jpg	краб 30гр, тамага 20гр, авокадо 15гр, сайси.\r\n\r\n	краб 30гр, тамага 20гр, авокадо 15гр, сайси.\r\n\r\n	f	36000	1	265	f	100
+944	Аяши	Аяши	AgACAgIAAxkDAAIUG1-W8KyuO0FGiQABuBDsC8zI-kpvTAACVa8xG7ikuUhSwUq5zlMuHoOgaZYuAAMBAAMCAAN4AAPEIgMAARsE	/home/telegrambot/SeriyakiBot/data/fa568995cd964154510592608e0a51b5.jpg	Угорь 40 гр, крабовые палочки, тамага, масага, спйси соус.	Угорь 40 гр, крабовые палочки, тамага, масага, спйси соус.	f	49000	1	265	f	100
+943	Пицца ролл	Пицца ролл	AgACAgIAAxkDAAIUJV-W8NB2wUnpHOy4yfoeRWImwtioAAJWrzEbuKS5SE5elvncyhmekEYFly4AAwEAAwIAA3gAA3k1AgABGwQ	/home/telegrambot/SeriyakiBot/data/a6ab1906fb0ca6957ef79144faeceed0.jpg	Курица 40 гр, Салями 60 гр, сыр хохланд, черри.	Курица 40 гр, Салями 60 гр, сыр хохланд, черри.	f	53000	1	265	f	100
+946	Ролл Дракон 	Ролл Дракон 	AgACAgIAAxkDAAIUZV-W87dtTjE-_i2QTQLIWe8kBng3AAJfrzEbuKS5SIJd7AZcDCXtGgmfli4AAwEAAwIAA3gAA24oAwABGwQ	/home/telegrambot/SeriyakiBot/data/e6674d1437a9b189c4cac2971243ab0b.jpg	Угорь 150 гр, лосось копченный, авокадо, сыр фила, икра лосося, унаги соус, чука 	Угорь 150 гр, лосось копченный, авокадо, сыр фила, икра лосося, унаги соус, чука 	f	120000	1	264	f	100
+948	Сливочный угорь	Сливочный угорь	\N	/home/telegrambot/SeriyakiBot/data/e43367a57e99d1bade2ed9e612d648c4.jpg	Состав: угорь 70гр, сыр фила 60гр, унаги соус.\r\n\r\n	Состав: угорь 70гр, сыр фила 60гр, унаги соус.\r\n\r\n	f	65000	1	264	f	100
+970	asd	asd	\N	\N	asdasdasd	asdadsasd	f	1	1	\N	f	111
+945	Лососик Hot Терияки 	Лососик Hot Терияки 	AgACAgIAAxkDAAIU5l-W-0C0jQbVD7HTb_CgF1ALS50GAAKCrzEbuKS5SCK0ok-ZXZx-V-Laly4AAwEAAwIAA3gAAzIbAgABGwQ	/home/telegrambot/SeriyakiBot/data/46b3b4b473009ad4d50dd277ecb4e6ae.jpg	Лосось 30 гр, сыр фила 20гр, огурцы, соус терияки. 	Лосось 30 гр, сыр фила 20гр, огурцы, соус терияки. 	f	48000	1	265	f	100
+949	Сливочный лосось	Сливочный лосось	AgACAgIAAxkDAAIVNl-YD5_Qxr997odNveVOgqFVvq9_AAIVsTEbaVbBSJg7j4vr0E71BwABRZYuAAMBAAMCAAN4AAPcnAMAARsE	/home/telegrambot/SeriyakiBot/data/b6a1568a08e16019ef77e82b98e6c916.jpg	Лосось 70 гр, сыр фила.\r\n	Лосось 70 гр, сыр фила.	f	60000	1	264	f	100
+912	Том Ям	Том Ям	AgACAgIAAxkDAAIQel-TxS37VMHN4I78prC-opTbV0fIAAINtTEbQ0uhSN5Pn6WINiwsCLNFmC4AAwEAAwIAA3cAA04mAgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__5.jpg			f	52500	1	263	f	99
+924	Калифорния Креветка	Калифорния Креветка	AgACAgIAAxkDAAIVO1-YD8plIEClpDFsjM73vx11NjofAAIWsTEbaVbBSOowxTYIem-uM0ldmi4AAwEAAwIAA3gAAwMTAAIbBA	/home/telegrambot/SeriyakiBot/data/98343af89617d75c7f4daadd25c510c7.jpg	креветка тигровая 35гр, авокадо, огурец, масага. 8шт \r\n\r\n	креветка тигровая 35гр, авокадо, огурец, масага. \r\n\r\n	f	42000	1	264	f	100
+933	Инь Янь	Инь Янь	AgACAgIAAxkDAAIYHV-ZiEqnSj2LGQTunbbocN7D7-egAAKWsDEb8bvJSHrFLHjitHQoVOg-li4AAwEAAwIAA3gAAxGqAwABGwQ	/home/telegrambot/SeriyakiBot/data/61cff8a3c9fa30c485df60be37a991b2.jpg	лосось 30гр, угорь 30гр, унаги соус.\r\n\r\n	лосось 30гр, угорь 30гр, унаги соус.\r\n\r\n	f	40000	1	264	f	100
+888	Гункан Лосось 	Гункан Лосось 	AgACAgIAAxkDAAIaQl-a2kSA7W4gR6Fh7bBoPbrSZr5pAAJkrzEbU_bYSL4AAdxsOuikxqQtRJguAAMBAAMCAAN3AANGYgIAARsE	/home/telegrambot/SeriyakiBot/data/v_09092020__33.jpg	рис 25 гр лосось 20 гр	рис 25 гр лосось 20 гр	f	11500	1	268	f	99
+935	фруктовый ролл 	фруктовый ролл 	AgACAgIAAxkDAAIa8F-a6twyxJHsCaJXc9u-bx17mR-WAAJBsTEb8bvZSCTdYljA9j6SiyxEmC4AAwEAAwIAA3gAA0xjAgABGwQ	/home/telegrambot/SeriyakiBot/data/ad09afa40808d775eeb2a95099303e63.jpg	ырный крем 60гр, спринг теста, киви, банан, ананас, клубничный топинг.	ырный крем 60гр, спринг теста, киви, банан, ананас, клубничный топинг.	f	33000	1	264	f	100
+909	Салатные криветки 	Салатные криветки 	\N	\N			t	8000	1	\N	f	100
+968	Рис по гавайски	Рис по гавайски	AgACAgIAAxkDAAIcHV-daHkSxlBv44rmpAQaF28uELijAAJyrzEb-FjoSI5G-2n85cbmJ6Holy4AAwEAAwIAA3kAA6R2AgABGwQ	/home/telegrambot/SeriyakiBot/data/attachment (1).jpg	Курица, Ананас, Черри, Овощи, Терияки соус, пикантный соус		f	20000	1	266	f	100
+910	Ананас 	Ананас 	\N	\N			t	8000	1	\N	f	100
+911	Омлет 	Омлет 	\N	\N			t	8000	1	\N	f	100
+880	Голень куриная SeriYaki 	Голень куриная SeriYaki 	AgACAgIAAxkDAAIQ2V-UDiT5veVUzFk25ItTDzJ1E8VKAAJQtTEbQ0uhSHAYgtstNJijUgXZli4AAwEAAwIAA3cAAxbOAgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__43-min.jpg	3 шт 		f	25000	1	267	f	100
+969	Крылышки SeriYaki ( mini ) 	Крылышки SeriYaki ( mini ) 	AgACAgIAAxkDAAIQ_F-UEpANf32TSqFyrlU1zrz7ZUTNAAJTtTEbQ0uhSHYtJ9KtyrAyPIrali4AAwEAAwIAA3cAA-LLAgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__40-min.jpg	5 шт 	5 dona 	f	22000	1	267	f	100
+923	Сливочный крабик	Сливочный крабик	\N	/home/telegrambot/SeriyakiBot/data/ac9576427d8ef6df5b2313b71cfb3f84.jpg	краб 30гр, сыр фила 40гр, апельсин соус.\r\n\r\n	краб 30гр, сыр фила 40гр, апельсин соус.\r\n\r\n	f	25000	1	264	f	100
+927	Мини огурец	Мини огурец	AgACAgIAAxkDAAITrF-W5vkGr4wS4PGkkmlz8Ppg-hOAAAJDrzEbuKS5SM-ea4gGs6isAxrnly4AAwEAAwIAA3gAAwpFAgABGwQ	/home/telegrambot/SeriyakiBot/data/b2d4a6659ad111f73b2f04ffc2d18f15.jpg			f	8900	1	264	f	100
+917	Филаделфия Шеф 	Филаделфия Шеф 	AgACAgIAAxkDAAIUs1-W9pyBt8pGJ2kQL9mCEZWsY42mAAJvrzEbuKS5SH5MNSzaBrWjbATZli4AAwEAAwIAA3gAAxPvAgABGwQ	/home/telegrambot/SeriyakiBot/data/d20362484c801749d04d5efeacd94558.jpg	лосось 70гр, сыр фила 60гр, авокадо, икра лосося.	лосось 70гр, сыр фила 60гр, авокадо, икра лосося.	f	58000	1	264	f	100
+932	Бурито	Бурито	AgACAgIAAxkDAAIUzF-W9rTgZhLzU3qruHdJdj2_DNzmAAJyrzEbuKS5SCFNwaHBBIWrCGn7lC4AAwEAAwIAA3gAA-g3BgABGwQ	/home/telegrambot/SeriyakiBot/data/4ed7ccb14f83461b8d275c9095d6d076.jpg	краб 25гр, лосось(копченный)15гр, сыр фила 15гр, айсберг, сырный соус.	краб 25гр, лосось(копченный)15гр, сыр фила 15гр, айсберг, сырный соус.	f	45000	1	264	f	100
+951	Сливочная чука	Сливочная чука	AgACAgIAAxkDAAIU1l-W9r8v4PzrtvRMbQkaPyTmWprjAAJzrzEbuKS5SEBrge5xncbsiKxsli4AAwEAAwIAA3gAA4EgAwABGwQ	/home/telegrambot/SeriyakiBot/data/29d52300e16d4031d93193c905158672.jpg	сыр фила 60гр, чука 50гр, ореховый соус.	сыр фила 60гр, чука 50гр, ореховый соус.	f	52000	1	264	f	100
+971	Цезарь ролл 	Цезарь ролл 	\N	/home/telegrambot/SeriyakiBot/data/c103b4b54786cf0c3df1b1488a2bb599.jpg	кура 40гр, айсберг 15гр, помидоры 15гр, соус цезарь.	кура 40гр, айсберг 15гр, помидоры 15гр, соус цезарь.	f	38000	1	264	f	100
+974	Цезарь 	Цезарь 	\N	\N			f	1	1	269	f	100
+956	Филаделфия гриль	Филаделфия гриль	AgACAgIAAxkDAAIVBF-XEnu6xmZhup-Qan6Bej4VZHOCAALVsDEbaVa5SEyT7tIxlqnbYZZJli4AAwEAAwIAA3gAA1aYAwABGwQ	/home/telegrambot/SeriyakiBot/data/1e07d2fcb9408d3ad6afd4bf6c281327.jpg	лосось 70гр, сыр фила 40гр, тамага, икра лосося, цезарь соус.	лосось 70гр, сыр фила 40гр, тамага, икра лосося, цезарь соус.	f	65000	1	265	f	100
+972	Унаги в темпуре	Унаги в темпуре	AgACAgIAAxkDAAIVE1-XEoih3uQsFIdFrsOcZlWTHTxIAALXsDEbaVa5SEKQmN8L9ky2u7KUly4AAwEAAwIAA3gAA-VFAgABGwQ	/home/telegrambot/SeriyakiBot/data/ca125c18124bbffefbbc7b9ee072b894.jpg	угорь 20гр, тамага 15гр, яки соус, масага, унаги.\r\n\r\n	угорь 20гр, тамага 15гр, яки соус, масага, унаги.\r\n\r\n	f	55000	1	265	f	100
+936	Натс ролл	Натс ролл	AgACAgIAAxkDAAIVLF-YD30_8jZWjUsD1rZcUMzGPUkdAAITsTEbaVbBSMPpQVoyMLDLv-wXmC4AAwEAAwIAA3gAA61CAgABGwQ	/home/telegrambot/SeriyakiBot/data/118f281a4fe4422f51f5e4fb3f7c2b33.jpg	Спринг тесто, натс крем, грецкий орех, шоколадный топпинг.	Спринг тесто, натс крем, грецкий орех, шоколадный топпинг.	f	40000	1	264	f	100
+963	Легенда запеченный	Легенда запеченный	AgACAgIAAxkDAAIVo1-YGbfQCOzDEmcTfCFJtSMGoNs5AAJVrzEbuKS5SFLBSrnOUy4eg6Bpli4AAwEAAwIAA3gAA8QiAwABGwQ	/home/telegrambot/SeriyakiBot/data/529f3135887a3cd8b1d894e7f0014c07.jpg			f	43000	1	265	f	100
+967	Эби жаренный	Эби жаренный	AgACAgIAAxkDAAIVsl-YGcQBH1er8AyYj8o8ZzAbq3bxAAI0sTEbaVbBSFCyCrRSR0LStxfnly4AAwEAAwIAA3gAA8lOAgABGwQ	/home/telegrambot/SeriyakiBot/data/897ec65454ffdb474477dfe459cd20af.jpg	креветка тигровая 25гр, лосось (копчённый)10гр, сыр фила 15гр, маринованный имбирь.\r\n\r\n	креветка тигровая 25гр, лосось (копчённый)10гр, сыр фила 15гр, маринованный имбирь.\r\n\r\n	f	49000	1	265	f	100
+918	Филаделфия Грин	Филаделфия Грин	AgACAgIAAxkDAAIXG1-ZbZ6ZG1TezsR5i-3LaL20XEP4AAJqsDEb8bvJSPe72FoCm6d1gCfNly4AAwEAAwIAA3gAA58qAgABGwQ	/home/telegrambot/SeriyakiBot/data/9f8b0e3c32f95fc2157fb75e90cb4be8.jpg	лосось 20гр, сыр фила 40гр, огурцы 15гр, укроп.\r\n\r\n	лосось 20гр, сыр фила 40гр, огурцы 15гр, укроп.\r\n\r\n	f	40000	1	264	f	100
+973	Филоман пополам	Филоман пополам 	AgACAgIAAxkDAAIXVF-Zc7mpAoYzf6GkRmk-pbuSESyrAAJ0sDEb8bvJSCKxBA59TTQVjiXqly4AAwEAAwIAA3cAA9hUAgABGwQ	/home/telegrambot/SeriyakiBot/data/IMG_7239.jpg	Филаделфия классика 4 шт, филаделфия масага 4 шт, филаделфия угорь 4 шт, филаделфия грин 4 шт, филаделфия шеф 4 шт. \r\n	 Филаделфия классика 4 шт, филаделфия масага 4 шт, филаделфия угорь 4 шт, филаделфия грин 4 шт, филаделфия шеф 4 шт. \r\n	f	131000	1	262	f	100
+850	Филоман сет	Филоман сет	AgACAgIAAxkDAAIXPl-Zb0L8HdJ1PBOgiaLqeK61eblbAAI1sDEbU_bISHI5UD7kSXY4HYlGli4AAwEAAwIAA3cAA7CrAwABGwQ	/home/telegrambot/SeriyakiBot/data/IMG_7164.jpg	филаделфия классика 8 шт, филаделфия масага 8 шт, филаделфия угорь 8 шт, филаделфия грин 8 шт, филаделфия шеф 8 шт.\r\n	филаделфия классика 8 шт, филаделфия масага 8 шт, филаделфия угорь 8 шт, филаделфия грин 8 шт, филаделфия шеф 8 шт.\r\n	f	250000	1	262	f	98
+976	Калифорния креветка темпура 	Калифорния креветка темпура 	\N	/home/telegrambot/SeriyakiBot/data/c80c00db1675b88b3036c21f0dd5f6a5.jpg	креветка тигровая 35 гр, тамага, авокадо, сырный соус, масага.	креветка тигровая 35 гр, тамага, авокадо, сырный соус, масага.	f	49000	1	265	f	100
+862	Калифорния сет	Калифорния сет	AgACAgIAAxkDAAIgIV-eqQ2qi6xD7oltDPWVFGYFcH3xAALVsDEbtDH4SJ6uenS56B2N0ohGli4AAwEAAwIAA3kAA2zHAwABHgQ	/home/telegrambot/SeriyakiBot/data/attachment.jpg	калифорния краб 8 шт, калифорния угорь 8 шт, калифорния лосось 8 шт, калифорния креветка 8 шт, калифорния креветка темпура 8шт, калифорния запеченный (острый) 8 шт \r\n	калифорния краб 8 шт, калифорния угорь 8 шт, калифорния лосось 8 шт, калифорния креветка 8 шт, калифорния креветка темпура 8шт, калифорния запеченный (острый) 8 шт \r\n	f	240000	1	262	f	100
+978	Морской ролл 	Морской ролл 	\N	/home/telegrambot/SeriyakiBot/data/cff3b1d454582c799ea938a0974b86f7.jpg	креветка тигровая 30 гр, лосось копченный 40 гр, сыр фила, огурцы, мусс паприка. \r\n\r\n	креветка тигровая 30 гр, лосось копченный 40 гр, сыр фила, огурцы, мусс паприка. \r\n\r\n	f	51000	1	264	f	100
+857	1,5 кг роллов	1,5 кг роллов	AgACAgIAAxkDAAIapF-a5g5cNnf0B0_pWzd9RhnN1GVwAAI-sTEb8bvZSJMZr2MFbQlGw1sVlS4AAwEAAwIAA3kAA-zqBQABGwQ	/home/telegrambot/SeriyakiBot/data/1,5 кг запеченных ролов .jpg	спайси краб 8 шт, золотой дракон 8 шт, аяши 8 шт, окунь запеченный 8 шт, яки запеченный 8 шт, легенда запеченный 8 шт. \r\n\r\n	спайси краб 8 шт, золотой дракон 8 шт, аяши 8 шт, окунь запеченный 8 шт, яки запеченный 8 шт, легенда запеченный 8 шт. \r\n	f	256000	1	262	f	200
+975	Калифорния лосось 	Калифорния лосось 	AgACAgIAAxkDAAIYbF-ZkGGXA3MB08YGVs2NcT0c2HQUAAIurzEb8bvRSFA0hQENNThnzPTAly4AAwEAAwIAA3gAA3suAgABGwQ	/home/telegrambot/SeriyakiBot/data/3bad51b0fa53d64ba2bde4bbda4ddcfd.jpg	лосось 35 гр, авокадо, огурец, масага.	лосось 35 гр, авокадо, огурец, масага.	f	40000	1	264	f	100
+977	Нежный тунец	Нежный тунец 	AgACAgIAAxkDAAIYcV-ZkHVrHuqm0i5dvvs34lV5oZ9aAAIvrzEb8bvRSIaGqgSK2fFH7qNMli4AAwEAAwIAA3gAA5OjAwABGwQ	/home/telegrambot/SeriyakiBot/data/c764a869bfaa9a38862713f9786dc416.jpg	тунец 80 гр, сыр фила 50 гр, авокадо, тамага, апельсиновый соус.\r\n\r\n\r\n	тунец 80 гр, сыр фила 50 гр, авокадо, тамага, апельсиновый соус.\r\n\r\n	f	68000	1	264	f	100
+859	Веган	Веган	AgACAgIAAxkDAAIbcV-dIXGc7KWKL5G1ybh7HnxRrmS_AALkrjEb-FjoSELn8C2f9Nbz3RvKly4AAwEAAwIAA3kAA7lHAgABGwQ	/home/telegrambot/SeriyakiBot/data/attachmednt.jpg	мини авокадо 6 шт, мини огурец 6 шт, овощной мексиканец 8 шт, чика нигири 2 шт\r\n\r\n	мини авокадо 6 шт, мини огурец 6 шт, овощной мексиканец 8 шт, чика нигири 2 шт\r\n\r\n	f	65000	1	262	f	100
+979	Мини сет 	Мини сет 	\N	\N	мини авокадо 6 шт, мини огурец 6 шт, мини лосось 6 шт, мини краб 6 шт, мини угорь 6 шт, мини чука 6 шт, мини креветка 6 шт, мини лосось каппа 6 шт.\r\n\r\n	мини авокадо 6 шт, мини огурец 6 шт, мини лосось 6 шт, мини краб 6 шт, мини угорь 6 шт, мини чука 6 шт, мини креветка 6 шт, мини лосось каппа 6 шт.\r\n	f	1	1	262	f	100
+858	Большая пятница	Большая пятница	AgACAgIAAxkDAAIb71-dUx3Qpq6Y0lzvOEcfwT5w-K5kAAIOrzEb-FjoSIM2HOVjAX9u7U_1lC4AAwEAAwIAA3kAAz5jBgABGwQ	/home/telegrambot/SeriyakiBot/data/attachm222ent.jpg	кимбап 8 шт, буррито 8 шт, муви жаренный 8 шт, калифорния тунец 8 шт, сливочная чука 8 шт, золотой дракон запеченный 8 шт, легенда запеченный 8 шт, калифорния краб 8 шт, мини огурец 6 шт, мини краб 6 шт.\r\n\r\n	кимбап 8 шт, буррито 8 шт, муви жаренный 8 шт, калифорния тунец 8 шт, сливочная чука 8 шт, золотой дракон запеченный 8 шт, легенда запеченный 8 шт, калифорния краб 8 шт, мини огурец 6 шт, мини краб 6 шт.\r\n	f	360000	1	262	f	100
+990	Яки запеченный 	Яки запеченный 	AgACAgIAAxkDAAIclV-dgWdC3ZheawTcUVGKHkQ0pCUrAAIgsTEb-FjwSD0ZR3P_1SK6XGYWmC4AAwEAAwIAA3gAA5x0AgABGwQ	/home/telegrambot/SeriyakiBot/data/d66c21ea85af91f68e01d219af65975f.jpg	кура 40гр, сыр фила15гр, сыр хохланд 15гр, яки соус.\r\n\r\n	кура 40гр, сыр фила15гр, сыр хохланд 15гр, яки соус.\r\n\r\n	f	38000	1	265	f	100
+865	Wok Сингапур	Wok Сингапур	AgACAgIAAxkDAAIcT1-da18pmvKJjt70X6xsbX_p75-zAAK9rjEbXi7wSINGeNv8Kd8ugxfnly4AAwEAAwIAA3kAA9tzAgABGwQ	/home/telegrambot/SeriyakiBot/data/funcheza(5).jpg	стеклянная лапша 180 гр, салатные креветки 50гр, овощи 120 гр, пикантный соус, чили сладкий соус.\r\n\r\n	стеклянная лапша 180 гр, тигровые креветки 50 гр, овощи 120 гр, пикантный соус, чили сладкий соус.\r\n\r\n	f	25000	1	266	f	100
+866	Удон с курицей	Удон с курицей 	AgACAgIAAxkDAAIcGF-daAtXW9bxvg8Nn8c_UNGXt9EAA3GvMRv4WOhIT8-vThnSFL-fDUiWLgADAQADAgADeQADX8UDAAEbBA	/home/telegrambot/SeriyakiBot/data/udon2).jpg	пшеничная лапша 200 гр, курица 100 гр, овощи 120 гр, пикантный соус, терияки соус\r\n\r\n\r\n	пшеничная лапша 200 гр, курица 100 гр, овощи 120 гр, пикантный соус, терияки соус\r\n\r\n\r\n	f	20000	1	266	f	94
+851	Океан	Океан	AgACAgIAAxkDAAIY_V-Zmb1riJdRc90UQLbL4AUDcZrrAAJtsDEbU_bISK7B02pyUpVjzCbqly4AAwEAAwIAA3cAA8BcAgABGwQ	/home/telegrambot/SeriyakiBot/data/IMG_7191.jpg	креветка нежная 8 шт, сяки в панко 8 шт, яки запеченный 8 шт, фила грин 8 шт, окунь запеченный 8 шт, спайси краб 8 шт, нежный тунец 8 шт, филаделфия угорь 8 шт, калифорния краб 8 шт, калифорния лосось 8 шт, мини лосось 6 шт, мини угорь 6 шт, мини краб 6 шт, \r\n\r\n	креветка нежная 8 шт, сяки в панко 8 шт, яки запеченный 8 шт, фила грин 8 шт, окунь запеченный 8 шт, спайси краб 8 шт, нежный тунец 8 шт, филаделфия угорь 8 шт, калифорния краб 8 шт, калифорния лосось 8 шт, мини лосось 6 шт, мини угорь 6 шт, мини краб 6 шт, \r\n	f	540000	1	262	f	104
+887	Гункан спайси сет запеченный 	Гункан спайси сет запеченный 	\N	\N	гункан лосось 2 шт, гункан креветка 2 шт, гункан кальмар 2 шт, гункан краб 2 шт,  гункан угорь 2 шт, гункан тунец 2 шт, гункан мидии 2 шт. \r\n	гункан лосось 2 шт, гункан креветка 2 шт, гункан кальмар 2 шт, гункан краб 2 шт,  гункан угорь 2 шт, гункан тунец 2 шт, гункан мидии 2 шт. \r\n	f	155000	1	262	f	100
+864	Гункан яки сет запечённый	Гункан яки сет запечённый	\N	\N	гункан лосось 2 шт, гункан креветка 2 шт, гункан кальмар 2 шт, гункан краб 2 шт,  гункан угорь 2 шт, гункан тунец 2 шт, гункан мидии 2 шт. \r\n	гункан лосось 2 шт, гункан креветка 2 шт, гункан кальмар 2 шт, гункан краб 2 шт,  гункан угорь 2 шт, гункан тунец 2 шт, гункан мидии 2 шт. \r\n	f	155000	1	262	f	100
+875	Креветки в темпуре	Креветки в темпуре	\N	\N	креветки тигровые 5 шт, овощной спринг ролл 2 шт\r\n\r\n	креветки тигровые 5 шт, овощной спринг ролл 2 шт\r\n	f	60000	1	267	f	100
+981	Гункан краб	Гункан краб	\N	/home/telegrambot/SeriyakiBot/data/v_09092020__33.jpg	рис 25 гр, снежный краб 20 гр \r\n\r\n	рис 25 гр, снежный краб 20 гр \r\n	f	11500	1	268	f	100
+983	Гункан тунец	Гункан тунец	\N	/home/telegrambot/SeriyakiBot/data/v_09092020__33.jpg	рис 25 гр, тунец 20 гр \r\n\r\n	рис 25 гр, тунец 20 гр \r\n	f	11500	1	268	f	100
+984	Гункан мидии	Гункан мидии	\N	/home/telegrambot/SeriyakiBot/data/v_09092020__34.jpg	рис 25 гр, мидии 20 гр\r\n\r\n	рис 25 гр, мидии 20 гр\r\n	f	13500	1	268	f	100
+989	Окунь запеченный 	Окунь запеченный 	\N	/home/telegrambot/SeriyakiBot/data/23e0e486e04a0884bd3ae79933e6cf52.jpg	окунь 40 гр, угорь 10 гр, курица 30 гр, яки соус\r\n\r\n	окунь 40 гр, угорь 10 гр, курица 30 гр, яки соус\r\n	f	41000	1	265	f	100
+986	Нигири угорь 	Нигири угорь 	\N	/home/telegrambot/SeriyakiBot/data/v_09092020__31.jpg	рис 20 гр, угорь 25 гр\r\n\r\n 	рис 20 гр, угорь 25 гр\r\n	f	12500	1	268	f	100
+985	Нигири лосось	Нигири лосось	AgACAgIAAxkDAAIaYF-a36664YGnr3cgKPeMSA9zrygsAALpsDEbzCpRSOPyyGA2Cg4lMXJoly4AAwEAAwIAA3cAAz_tAQABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__27.jpg	рис 20 гр, лосось 25 гр \r\n\r\n	рис 20 гр, лосось 25 гр \r\n	f	12500	1	268	f	100
+987	Нигири тунец	Нигири тунец	\N	/home/telegrambot/SeriyakiBot/data/v_09092020__28.jpg	рис 20 гр, тунец 25 гр \r\n\r\n	рис 20 гр, тунец 25 гр \r\n	f	12500	1	268	f	100
+988	Нигири креветка	Нигири креветка	\N	/home/telegrambot/SeriyakiBot/data/v_09092020__30.jpg	рис 20 гр, тигровая креветка 25 гр \r\n\r\n	рис 20 гр, тигровая креветка 25 гр \r\n	f	12500	1	268	f	100
+982	Гункан кальмар 	Гункан кальмар 	AgACAgIAAxkDAAIadV-a4FZdk_MIJjJXeMRdjDtmjebvAAJkrzEbU_bYSL4AAdxsOuikxqQtRJguAAMBAAMCAAN3AANGYgIAARsE	/home/telegrambot/SeriyakiBot/data/v_09092020__33.jpg	рис 25 гр, кальмар 20 гр\r\n\r\n	рис 25 гр, кальмар 20 гр\r\n	f	11500	1	268	f	100
+980	Гункан креветка	Гункан креветка	AgACAgIAAxkDAAIaf1-a4IESjsVaqIne4rex4vlYNGPkAAItsTEb8bvZSIA4Mo5CtjuTuvTAly4AAwEAAwIAA3cAA7A4AgABGwQ	/home/telegrambot/SeriyakiBot/data/v_09092020__34.jpg	рис 25 гр, креветка тигровая 20 гр.\r\n\r\n	рис 25 гр, креветка тигровая 20 гр.\r\n	f	11500	1	268	f	100
+852	SeriYaki 	SeriYaki 	AgACAgIAAxkDAAIbWF-dIRwaHBAcm6j-WXM7RIM9FrDyAALirjEb-FjoSH0oRbnd3K3Py-wXmC4AAwEAAwIAA3kAA_VwAgABGwQ	/home/telegrambot/SeriyakiBot/data/seriyaki set.jpg	филаделфия классика 8 шт, SeriYaki сэндвич 6 шт, яки запеченный 8 шт, инь янь в панко 8 шт, гункан креветка 2 шт, гункан лосось 2 шт, никигри лосось 1 шт, нигири тунец 1 шт. \r\n\r\n	филаделфия классика 8 шт, SeriYaki сэндвич 6 шт, яки запеченный 8 шт, инь янь в панко 8 шт, гункан креветка 2 шт, гункан лосось 2 шт, никигри лосось 1 шт, нигири тунец 1 шт. \r\n	f	250000	1	262	f	100
+991	Инь Янь в панко 	Инь Янь в панко 	AgACAgIAAxkDAAIcml-dgXNT00L5_a836g2RZoHzvNAMAAIhsTEb-FjwSP00KeLyG75v6Fz4lC4AAwEAAwIAA3gAAzlqBgABGwQ	/home/telegrambot/SeriyakiBot/data/062c2b328b938fde0d0f8a2ef9e983f2.jpg	лосось 30 гр, угорь 30 гр\r\n\r\n	лосось 30 гр, угорь 30 гр\r\n	f	42000	1	265	f	100
+901	Паприка красная	Паприка красная	\N	\N			t	3000	1	\N	f	100
+903	Бар	Бар	\N	\N			t	5000	1	\N	f	100
+904	Кур	Кур	\N	\N			t	5000	1	\N	f	100
+905	Соуса 	Соуса 	\N	\N			t	5000	1	\N	f	100
+906	Лосось	Лосось	\N	\N			t	8000	1	\N	f	100
+\.
+
+
+--
+-- Data for Name: locations; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.locations (id, latitude, longitude, address, order_id) FROM stdin;
+2	41.344695999999999	69.3439319999999952	Узбекистан, Ташкент, улица Шахриабад	3
+3	41.3468659999999986	69.3506569999999982	Узбекистан, Ташкент, Мирзо-Улугбекский район, массив Буз-2, 7	4
+7	41.302346	69.2295510000000007	Узбекистан, Ташкент, 2-й проезд Козиробод	15
+8	41.302346	69.2295510000000007	Узбекистан, Ташкент, 2-й проезд Козиробод	16
+9	41.3024040000000028	69.2295859999999976	Узбекистан, Ташкент, 2-й проезд Козиробод	19
+10	41.3023880000000005	69.2295299999999969	Узбекистан, Ташкент, 2-й проезд Козиробод, 18	20
+11	41.3023880000000005	69.2295299999999969	Узбекистан, Ташкент, 2-й проезд Козиробод, 18	21
+12	41.3118630000000024	69.2908010000000019	Узбекистан, Ташкент, улица Узбекистон Овози	14
+13	41.3116899999999987	69.2905329999999964	Узбекистан, Ташкент, Мирзо-Улугбекский район, массив Буюк Ипак Йули, 39	17
+14	41.311633999999998	69.2905930000000012	Узбекистан, Ташкент, Мирзо-Улугбекский район, массив Буюк Ипак Йули, 39	22
+15	41.3118709999999965	69.2908290000000022	Узбекистан, Ташкент, улица Узбекистон Овози	23
+16	41.3118729999999985	69.2906660000000016	Узбекистан, Ташкент, улица Узбекистон Овози	24
+18	41.302346	69.2295510000000007	Узбекистан, Ташкент, 2-й проезд Козиробод	26
+19	41.3118729999999985	69.2906660000000016	Узбекистан, Ташкент, улица Узбекистон Овози	27
+20	41.3023749999999978	69.2295689999999979	Узбекистан, Ташкент, 2-й проезд Козиробод	28
+21	41.3116899999999987	69.2905329999999964	Узбекистан, Ташкент, Мирзо-Улугбекский район, массив Буюк Ипак Йули, 39	29
+22	41.311875999999998	69.2907620000000009	Узбекистан, Ташкент, улица Узбекистон Овози	30
+23	41.3562829999999977	69.3340749999999986	Узбекистан, Ташкент, Юнусабадский район, махалля Посира	25
+24	41.2885029999999986	69.2422499999999985	Узбекистан, Ташкент, улица Беларик, 30	31
+26	41.3118679999999969	69.290733000000003	Узбекистан, Ташкент, улица Узбекистон Овози	32
+28	41.3027629999999988	69.2298250000000053	Узбекистан, Ташкент, 2-й проезд Козиробод, 14	33
+29	41.3116100000000017	69.2905080000000027	Узбекистан, Ташкент, Мирзо-Улугбекский район, массив Буюк Ипак Йули, 39	34
+30	41.2797800000000024	69.2612639999999971	Узбекистан, Ташкент, Яккасарайский район, улица Абдуллы Каххара, 47A	35
+32	41.2797800000000024	69.2612639999999971	Узбекистан, Ташкент, Яккасарайский район, улица Абдуллы Каххара, 47A	36
+\.
+
+
+--
+-- Data for Name: notification_chats; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.notification_chats (chat_id, chat_title) FROM stdin;
+-472717355                                                                                          	Notify
+-422407350                                                                                          	IZOBILE оповещения
+-420730252                                                                                          	IZOBILIE оповещения
+-470050253                                                                                          	asdasdasd
+-1001453725091                                                                                      	SERIYAKI заказы
+\.
+
+
+--
+-- Data for Name: order_items; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.order_items (id, order_id, dish_id, count) FROM stdin;
+56	16	867	1
+5	4	\N	1
+6	5	\N	1
+4	3	\N	4
+60	18	869	1
+61	19	875	1
+62	20	868	1
+63	21	917	1
+69	14	916	4
+70	17	916	1
+71	17	918	1
+72	22	916	1
+73	22	888	1
+74	23	964	1
+75	24	912	1
+77	26	870	1
+78	27	868	1
+79	28	871	1
+10	7	\N	5
+15	11	\N	2
+34	13	\N	1
+11	7	\N	2
+12	8	\N	5
+13	9	\N	1
+14	10	\N	2
+80	29	850	1
+81	30	850	1
+82	25	919	1
+83	31	939	1
+85	32	858	1
+86	32	873	1
+89	12	947	1
+90	33	870	2
+91	34	920	1
+92	34	868	1
+93	35	866	2
+95	36	866	3
+55	15	866	1
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.orders (id, user_id, user_name, shipping_method, payment_method, address_txt, phone_number, confirmed, confirmation_date, delivery_price, total_amount, distance) FROM stdin;
+32	60519425	\N	delivery	payme	\N	998977044115	f	\N	5000	\N	0.0км
+15	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-25 09:17:08.326114	27500	47500	(6.5,км)
+23	633288098	Сирожиддин	delivery	cash	\N	998974009909	t	2020-10-27 13:10:56.507515	5000	60000	0.0км
+16	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-25 10:02:12.674673	27500	47500	(6.5,км)
+3	465632014	Nvrbckdown	delivery	cash	\N	998909643469	t	2020-09-05 18:57:00.340227	16000	2016000	(4.2,км)
+24	60519425	Акмаль	delivery	cash	\N	998977044115	t	2020-10-27 13:12:24.673958	5000	57500	0.0км
+4	465632014	Nvrbckdown	delivery	cash	\N	998909643469	t	2020-09-05 19:01:53.766247	19000	21000	(4.8,км)
+12	1294618325	\N	delivery	\N	a	+79032024978	f	\N	\N	\N	(15.7,км)
+5	1294618325	q	delivery	cash	фыв	+79032024978	t	2020-09-05 19:02:04.643506	\N	2000	\N
+18	116797709	\N	delivery	cash	ASD	+998997533235	f	\N	\N	\N	\N
+33	64925540	\N	delivery	\N	\N	\N	f	\N	11600	\N	5.2км
+19	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-25 10:10:26.62985	27500	27500	6.5км
+7	1294618325	q	delivery	cash	asd	+79032024978	t	2020-09-05 19:31:49.979587	\N	0	\N
+26	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-27 13:26:33.153548	11600	31600	5.2км
+13	583411442	\N	delivery	\N	Ро	\N	f	\N	\N	\N	\N
+8	583411442	sd	delivery	cash	asa	998977777777	t	2020-09-05 19:33:17.851136	\N	0	\N
+20	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-25 10:22:21.60526	21000	41000	5.2км
+9	583411442	sd	delivery	cash	ds	998977777777	t	2020-09-05 19:34:05.877551	\N	0	\N
+10	583411442	sd	delivery	cash	sdsa	998977777777	t	2020-09-05 19:34:49.112921	\N	0	\N
+27	60519425	Акмаль	delivery	cash	\N	998977044115	t	2020-10-27 13:33:12.31328	5000	25000	0.0км
+21	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-25 10:23:04.236188	11600	56600	5.2км
+11	64925540	Владимир	delivery	cash	шайхонтахур	+998935856774	t	2020-09-06 18:20:02.957726	\N	0	\N
+34	395554026	\N	delivery	cash	\N	998903208839	f	\N	5000	\N	0.0км
+28	64925540	Владимир	delivery	cash	\N	998935856774	t	2020-10-27 13:47:48.381969	11600	31600	5.2км
+35	1390262168	Дмитрий	delivery	cash	\N	998911341611	t	2020-11-03 07:12:35.129231	8900	48900	4.3км
+14	60519425	Акмаль	delivery	cash	\N	998977044115	t	2020-10-25 10:48:59.147169	5000	205000	0.0км
+30	60519425	Акмаль	delivery	cash	\N	998977044115	t	2020-10-28 13:45:11.204899	5000	255000	0.0км
+29	326090131	Равшан	delivery	cash	\N	+998909176510	t	2020-10-28 13:45:28.531067	5000	255000	0.0км
+17	561757383	Азим	delivery	cash	\N	998998191264	t	2020-10-25 10:52:12.961348	5000	79000	0.0км
+25	633288098	\N	delivery	payme	\N	998974009909	f	\N	14300	\N	6.1км
+22	60519425	Акмаль	delivery	cash	\N	998977044115	t	2020-10-26 09:42:00.534225	5000	67000	0.0км
+36	1390262168	Дмитрий	delivery	cash	\N	998911341611	t	2020-11-03 07:21:36.755536	8900	68900	4.3км
+31	60519425	Акмаль	delivery	cash	\N	998977044115	t	2020-10-31 11:25:09.895728	10400	48400	4.8км
+\.
+
+
+--
+-- Data for Name: registration_requests; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.registration_requests (id, user_id, phone_number, tg_username, username, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_admins; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.user_admins (id, email, password_hash) FROM stdin;
+2	admin@example.com	pbkdf2:sha256:150000$rIEj3Dmf$140a895554b891c644c87ec18b37f1e5d84ccb600e95204911904da86acd2622
+\.
+
+
+--
+-- Data for Name: user_dish; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.user_dish (user_id, dish_id) FROM stdin;
+155962879	751
+64925540	870
+696968352	912
+1132411	850
+116797709	869
+32515296	863
+1294618325	947
+395554026	868
+414841204	852
+688526490	881
+60519425	947
+1390262168	964
+326090131	850
+465632014	749
+583411442	727
+28882987	894
+3861884	979
+633288098	880
+818014209	866
+661735730	872
+592535001	912
+561757383	866
+821606	912
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: telegrambot
+--
+
+COPY public.users (id, full_user_name, username, phone_number, language, token, confirmed, telegram_id, registration_date, accept_policy) FROM stdin;
+465632014	Nvrbckdown	Nvrbckdown	998909643469	ru	\N	\N	\N	2020-09-05 18:56:16.330438	t
+155962879	Мурад	Seo_of_vid_uz	+998909408196	ru	\N	\N	\N	2020-09-05 19:16:24.936597	t
+583411442	sd	zakking1	998977777777	ru	\N	\N	\N	2020-09-05 19:30:26.945585	t
+60519425	Акмаль	Ardoss	998977044115	ru	\N	\N	\N	2020-10-16 16:50:07.291951	t
+1132411	Nafisa	\N	998903191003	uz	\N	\N	\N	2020-10-18 07:05:09.532142	t
+633288098	Сирожиддин	\N	998974009909	ru	\N	\N	\N	2020-10-20 15:31:59.421286	t
+561757383	Азим	\N	998998191264	ru	\N	\N	\N	2020-10-24 12:56:00.911929	t
+64925540	Владимир	BJIaDMuP	998935856774	ru	\N	\N	\N	2020-09-05 19:11:00.552207	t
+116797709	Behzod	startekmb	+998997533235	ru	\N	\N	\N	2020-10-25 10:08:54.007665	t
+1294618325	q	permanentusernames	+79032024978	ru	\N	\N	\N	2020-09-05 17:39:33.543152	\N
+688526490	Akmal	\N	998900001815	ru	\N	\N	\N	2020-10-26 18:06:29.754292	t
+395554026	Саид	\N	998903208839	ru	\N	\N	\N	2020-10-28 13:08:42.144419	t
+326090131	Равшан	\N	+998909176510	ru	\N	\N	\N	2020-10-28 13:40:19.637708	t
+28882987	Ахмад	\N	998909101441	ru	\N	\N	\N	2020-10-28 15:41:04.429455	t
+661735730	Jahongir	\N	+998994954062	ru	\N	\N	\N	2020-10-31 08:36:37.033934	f
+925047002	Сэм	samuilabdrahmanov	+998998187532	ru	\N	\N	\N	2020-10-31 17:44:39.453072	t
+592535001	Анаркулов Бекжан	bekzhan2019	998935971604	ru	\N	\N	\N	2020-10-31 17:55:44.206611	t
+414841204	Камиль	haoto_kami	998903259982	ru	\N	\N	\N	2020-10-31 22:24:28.185569	t
+233107637	Парвина	Shukurova_p	998905055517	ru	\N	\N	\N	2020-11-01 03:39:37.011715	t
+116053649	Нигора	Kosmetolog_Nigora_Tashkent	+998911907300	ru	\N	\N	\N	2020-11-01 07:04:51.990322	t
+1247704251	Диля	\N	998994858665	ru	\N	\N	\N	2020-11-01 07:22:45.531198	t
+1390262168	Дмитрий	dem_gilks	998911341611	ru	\N	\N	\N	2020-11-01 08:37:44.326248	t
+821606	Fuadbey	Fuadbey	998901747410	ru	\N	\N	\N	2020-11-01 11:17:12.977239	t
+3861884	Дилнора	DilnoraRose	998911367468	ru	\N	\N	\N	2020-11-01 12:24:26.488497	t
+32515296	Дмитрий	Dimasik1696	998903490145	ru	\N	\N	\N	2020-11-01 13:53:53.969711	t
+92402248	Александр	Aleksandr_Kazimov	998946314024	ru	\N	\N	\N	2020-11-02 18:00:11.285465	t
+818014209	Сарвар	\N	998900130312	uz	\N	\N	\N	2020-11-03 08:03:18.326536	f
+696968352	Ситора	\N	+998933770011	ru	\N	\N	\N	2020-11-03 08:37:58.997732	t
+\.
+
+
+--
+-- Name: cart_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.cart_items_id_seq', 93, true);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.comments_id_seq', 5, true);
+
+
+--
+-- Name: dish_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.dish_categories_id_seq', 276, true);
+
+
+--
+-- Name: dishes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.dishes_id_seq', 991, true);
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.locations_id_seq', 32, true);
+
+
+--
+-- Name: notification_chats_chat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.notification_chats_chat_id_seq', 1, false);
+
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.order_items_id_seq', 95, true);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.orders_id_seq', 36, true);
+
+
+--
+-- Name: registration_requests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.registration_requests_id_seq', 1, false);
+
+
+--
+-- Name: user_admins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.user_admins_id_seq', 2, true);
+
+
+--
+-- Name: user_dish_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.user_dish_user_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: telegrambot
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+
+
+--
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: cart_items cart_items_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.cart_items
+    ADD CONSTRAINT cart_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: dish_categories dish_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.dish_categories
+    ADD CONSTRAINT dish_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: dishes dishes_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.dishes
+    ADD CONSTRAINT dishes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: locations locations_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.locations
+    ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notification_chats notification_chats_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.notification_chats
+    ADD CONSTRAINT notification_chats_pkey PRIMARY KEY (chat_id);
+
+
+--
+-- Name: order_items order_items_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.order_items
+    ADD CONSTRAINT order_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: registration_requests registration_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.registration_requests
+    ADD CONSTRAINT registration_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_admins user_admins_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.user_admins
+    ADD CONSTRAINT user_admins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_dish user_dish_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.user_dish
+    ADD CONSTRAINT user_dish_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: dish_categories_level_idx; Type: INDEX; Schema: public; Owner: telegrambot
+--
+
+CREATE INDEX dish_categories_level_idx ON public.dish_categories USING btree (level);
+
+
+--
+-- Name: dish_categories_lft_idx; Type: INDEX; Schema: public; Owner: telegrambot
+--
+
+CREATE INDEX dish_categories_lft_idx ON public.dish_categories USING btree (lft);
+
+
+--
+-- Name: dish_categories_rgt_idx; Type: INDEX; Schema: public; Owner: telegrambot
+--
+
+CREATE INDEX dish_categories_rgt_idx ON public.dish_categories USING btree (rgt);
+
+
+--
+-- Name: ix_user_admins_email; Type: INDEX; Schema: public; Owner: telegrambot
+--
+
+CREATE INDEX ix_user_admins_email ON public.user_admins USING btree (email);
+
+
+--
+-- Name: ix_user_dish_dish_id; Type: INDEX; Schema: public; Owner: telegrambot
+--
+
+CREATE INDEX ix_user_dish_dish_id ON public.user_dish USING btree (dish_id);
+
+
+--
+-- Name: ix_user_dish_user_id; Type: INDEX; Schema: public; Owner: telegrambot
+--
+
+CREATE INDEX ix_user_dish_user_id ON public.user_dish USING btree (user_id);
+
+
+--
+-- Name: cart_items cart_items_dish_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.cart_items
+    ADD CONSTRAINT cart_items_dish_id_fkey FOREIGN KEY (dish_id) REFERENCES public.dishes(id) ON DELETE SET NULL;
+
+
+--
+-- Name: cart_items cart_items_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.cart_items
+    ADD CONSTRAINT cart_items_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: comments comments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: dish_categories dish_categories_parent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.dish_categories
+    ADD CONSTRAINT dish_categories_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES public.dish_categories(id) ON DELETE CASCADE;
+
+
+--
+-- Name: dishes dishes_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.dishes
+    ADD CONSTRAINT dishes_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.dish_categories(id);
+
+
+--
+-- Name: locations locations_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.locations
+    ADD CONSTRAINT locations_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+
+--
+-- Name: order_items order_items_dish_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.order_items
+    ADD CONSTRAINT order_items_dish_id_fkey FOREIGN KEY (dish_id) REFERENCES public.dishes(id) ON DELETE SET NULL;
+
+
+--
+-- Name: order_items order_items_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.order_items
+    ADD CONSTRAINT order_items_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+
+--
+-- Name: orders orders_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: telegrambot
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
